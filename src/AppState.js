@@ -4,11 +4,7 @@ import {
   computed
 } from 'mobx';
 
-import grayscaleColorList from './GrayscaleColorList';
-
 export default class AppState {
-  @observable black = '#000000';
-  @observable white = '#ffffff';
   @observable startCurrentColor = '#000000';
   @observable endCurrentColor;
   @observable generatedColorScalePercentage;
@@ -17,11 +13,16 @@ export default class AppState {
   @observable endRgbColor = '';
 
   constructor () {
-    this.grayscaleColors = grayscaleColorList;
+    this.storeGrayscaleColors = {};
+
+    autorun(() => {
+      this.generateGrayscaleColors();
+    });
   }
 
   selectColor = (color) => {
-    this.startCurrentColor = color || this.black;
+    this.startCurrentColor = color;
+    this.generateGrayscaleColors();
     return this.startCurrentColor;
   };
 
@@ -38,8 +39,33 @@ export default class AppState {
       'This is not a valid color hex value. For example: #e0e0e0 or #fff';
   };
 
+  generateGrayscaleColors = () => {
+    for (var i = 0; i <= 10000; i++) {
+      let percent = i / 10000,
+          fixedPercent = (percent * 100).toFixed(1),
+          numberAfterDecimal = Number((fixedPercent / 10).toString().split('')[2]),
+          numberBeforeDecimal = Number((fixedPercent / 10).toString().split('')[0]),
+          hexString = this.shadeColor(this.startCurrentColor, percent);
+
+      if (numberAfterDecimal === 2 ||
+          numberAfterDecimal === 4 ||
+          numberAfterDecimal === 6 ||
+          numberAfterDecimal === 8 ||
+          fixedPercent / 10 === 10
+      ) {
+        fixedPercent = Math.floor(Number(fixedPercent));
+      }
+
+      this.storeGrayscaleColors[hexString] = {
+        hexColor: hexString.toUpperCase(),
+        percent: fixedPercent
+      };
+    }
+  };
+
   onGenerateColorClick = (shadeType) => {
     console.log('LIGHTEN GENERATE');
+    console.log('ArraY!?', this.storeGrayscaleColors);
     this.generateErrorMessage = '';
     let hexStringArray;
 
@@ -67,11 +93,13 @@ export default class AppState {
 
       this.endRgbColor = this.convertHexToRgb(this.endCurrentColor);
       this.startRgbColor = this.convertHexToRgb(this.startCurrentColor);
+      this.endCurrentColor = this.endCurrentColor.toUpperCase();
 
-      for (let key in grayscaleColorList) {
-        if (grayscaleColorList[key].hex === this.endCurrentColor.toUpperCase()) {
+      for (let key in this.storeGrayscaleColors) {
+        if (this.storeGrayscaleColors[key].hexColor === this.endCurrentColor) {
+          let colorPercent = this.storeGrayscaleColors[key].percent;
           this.generatedColorScalePercentage =
-            `lighten(${this.startCurrentColor}, ${grayscaleColorList[key].percent}%);`;
+            `lighten(${this.startCurrentColor}, ${colorPercent}%);`;
           return;
         }
       }
@@ -106,28 +134,16 @@ export default class AppState {
     return result;
   };
 
+
   shadeColor = (color, percent) => {
-    var red = parseInt(color.substring(1,3), 16);
-    var green = parseInt(color.substring(3,5), 16);
-    var blue = parseInt(color.substring(5,7), 16);
+    var f=parseInt(color.slice(1),16),
+      t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
+    return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
+  };
 
-    red = parseInt(red * (100 + percent) / 100);
-    green = parseInt(green * (100 + percent) / 100);
-    blue = parseInt(blue * (100 + percent) / 100);
-
-    red = (red < 255) ? red : 255;
-    green = (green < 255) ? green : 255;
-    blue = (blue < 255) ? blue : 255;
-
-    var RR = ((red.toString(16).length==1)?"0"+red.toString(16):red.toString(16));
-    var GG = ((green.toString(16).length==1)?"0"+green.toString(16):green.toString(16));
-    var BB = ((blue.toString(16).length==1)?"0"+blue.toString(16):blue.toString(16));
-
-    return {
-      R: RR,
-      G: GG,
-      B: BB
-    }
+  blendColors = (c0, c1, p) => {
+    var f=parseInt(c0.slice(1),16),t=parseInt(c1.slice(1),16),R1=f>>16,G1=f>>8&0x00FF,B1=f&0x0000FF,R2=t>>16,G2=t>>8&0x00FF,B2=t&0x0000FF;
+    return "#"+(0x1000000+(Math.round((R2-R1)*p)+R1)*0x10000+(Math.round((G2-G1)*p)+G1)*0x100+(Math.round((B2-B1)*p)+B1)).toString(16).slice(1);
   };
 
 }

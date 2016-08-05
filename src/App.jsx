@@ -41,10 +41,6 @@ class App extends Component {
     }
   };
 
-  renderRgbValue = () => {
-
-  };
-
   render() {
     const { appState } = this.props;
     return (
@@ -68,15 +64,16 @@ class App extends Component {
             </button>
           </div>
           <div className="home-color-starting-input">
-            <h3>STARTING Hex Value</h3>
+            <h3>Selected Color: </h3>
             <input
               type="text"
+              disabled={true}
               value={appState.startCurrentColor}
               onChange={appState.handleStartColorChange} />
             <span>{appState.startRgbColor ? appState.startRgbColor : ''}</span>
           </div>
           <div className="home-color-ending-input">
-            <h3>ENDING Hex Value</h3>
+            <h3>Desired Hex Color: </h3>
             <input
               type="text"
               onChange={appState.handleEndColorChange}
