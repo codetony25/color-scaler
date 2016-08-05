@@ -3,9 +3,13 @@ var webpack = require('webpack');
 
 module.exports = {
   devtool: 'source-map',
+  target: 'web',
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.json']
+  },
   entry: [
     'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:3000',
+    // 'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
     './src/index'
   ],
@@ -29,9 +33,6 @@ module.exports = {
       }
     })
   ],
-  resolve: {
-    extensions: ['', '.js', '.jsx']
-  },
   module: {
     loaders: [{
       test: /\.jsx?$/,
