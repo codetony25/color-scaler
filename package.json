@@ -34,11 +34,7 @@
     "babel-preset-stage-1": "^6.5.0",
     "eslint": "^2.13.1",
     "eslint-plugin-react": "^5.1.1",
-    "express": "^4.14.0",
-    "react-hot-loader": "^3.0.0-beta.2",
-    "webpack-dev-middleware": "^1.6.1",
-    "webpack-dev-server": "^1.14.1",
-    "webpack-hot-middleware": "^2.12.2"
+    "express": "^4.14.0"
   },
   "dependencies": {
     "jassy": "^0.2.3",
@@ -47,6 +43,10 @@
     "mobx-react-devtools": "^4.2.0",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "react-hot-loader": "^3.0.0-beta.2",
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-dev-server": "^1.14.1",
+    "webpack-hot-middleware": "^2.12.2"
   }
 }
