@@ -4,7 +4,7 @@ import {
   computed
 } from 'mobx';
 
-export default class AppState {
+export default class HomeState {
   @observable startCurrentColor = '#000000';
   @observable endCurrentColor;
   @observable generatedColorScalePercentage;
@@ -42,16 +42,16 @@ export default class AppState {
   generateGrayscaleColors = () => {
     for (var i = 0; i <= 10000; i++) {
       let percent = i / 10000,
-          fixedPercent = (percent * 100).toFixed(1),
-          numberAfterDecimal = Number((fixedPercent / 10).toString().split('')[2]),
-          numberBeforeDecimal = Number((fixedPercent / 10).toString().split('')[0]),
-          hexString = this.shadeColor(this.startCurrentColor, percent);
+        fixedPercent = (percent * 100).toFixed(1),
+        numberAfterDecimal = Number((fixedPercent / 10).toString().split('')[2]),
+        numberBeforeDecimal = Number((fixedPercent / 10).toString().split('')[0]),
+        hexString = this.shadeColor(this.startCurrentColor, percent);
 
       if (numberAfterDecimal === 2 ||
-          numberAfterDecimal === 4 ||
-          numberAfterDecimal === 6 ||
-          numberAfterDecimal === 8 ||
-          fixedPercent / 10 === 10
+        numberAfterDecimal === 4 ||
+        numberAfterDecimal === 6 ||
+        numberAfterDecimal === 8 ||
+        fixedPercent / 10 === 10
       ) {
         fixedPercent = Math.floor(Number(fixedPercent));
       }
@@ -78,13 +78,13 @@ export default class AppState {
     }
 
     if ((hexStringArray.length === 4 ||
-        hexStringArray.length === 7) &&
-        hexStringArray[0] === '#'
+      hexStringArray.length === 7) &&
+      hexStringArray[0] === '#'
     ) {
 
       if (hexStringArray[1] === hexStringArray[2] &&
-          hexStringArray[1] === hexStringArray[3] &&
-          hexStringArray.length === 4
+        hexStringArray[1] === hexStringArray[3] &&
+        hexStringArray.length === 4
       ) {
         this.endCurrentColor =
           `${this.endCurrentColor}${hexStringArray[1]}${hexStringArray[1]}${hexStringArray[1]}`;

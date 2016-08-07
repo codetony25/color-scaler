@@ -1,0 +1,88 @@
+import debug from 'debug';
+import { resolve } from 'path';
+
+import Koa from 'koa';
+import convert from 'koa-convert';
+import mount from 'koa-mount';
+import staticCache from 'koa-static-cache';
+
+import createStore from '../src/stores/index.js';
+import render from './renderer.js';
+import { PORT } from './config.js';
+
+const { NODE_ENV } = process.env;
+
+const app = new Koa();
+
+debug.enable('koa');
+
+// production middlewares
+if (NODE_ENV !== 'development') {
+  app.use(convert(require('koa-compress')()));
+  app.use(convert(require('koa-html-minifier')({
+    caseSensitive: true,
+    collapseWhitespace: true,
+    collapseBooleanAttributes: true,
+    collapseInlineTagWhitespace: true,
+    decodeEntities: true,
+    minifyCSS: true,
+    minifyJS: true,
+    minifyURLs: true,
+    removeAttributeQuotes: true,
+    removeEmptyAttributes: true,
+    removeRedundantAttributes: true,
+    removeScriptTypeAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    useShortDoctype: true
+  })))
+}
+
+// Proxy asset folder to webpack development server in development mode
+if (NODE_ENV === 'development') {
+  const proxy = require('koa-proxy')({
+    host: `http://0.0.0.0:${PORT + 1}`,
+    map: (filePath) => `assets/${filePath}`
+  });
+  app.use(convert(mount('/assets', proxy)))
+} else {
+  const cacheOpts = { maxAge: 86400000, gzip: true };
+  app.use(convert(mount('/assets', staticCache(resolve('../dist'), cacheOpts))))
+}
+
+app.use(async (ctx) => {
+  try {
+    ctx.status = 200;
+    ctx.body = await render({
+      assets: require('./webpack-stats.json'),
+      store: createStore(),
+      location: ctx.request.url
+    });
+
+    // Don't cache assets name on dev
+    if (NODE_ENV === 'development') {
+      delete require.cache[require.resolve('./webpack-stats.json')]
+    }
+  } catch (err) {
+    console.log('server.js error', err);
+    // Render 500 error page from server
+    const { error, redirect } = err;
+    if (error) throw error;
+    // Handle component `onEnter` transition
+    if (redirect) {
+      const { pathname, search } = redirect;
+      ctx.redirect(pathname + search)
+    } else {
+      throw err;
+    }
+  }
+});
+
+app.listen(PORT, (error) => {
+  if (error) {
+    console.log('error:', error);
+  }
+});
+
+// Tell parent process koa-server is started
+if (process.send) process.send('online');
+debug('koa')('`koa-render-server` started on port %s', PORT);

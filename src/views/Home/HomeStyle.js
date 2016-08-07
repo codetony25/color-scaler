@@ -1,4 +1,4 @@
-const appStyles = () => {
+const homeStyles = () => {
   return {
     '.home-container': {
 
@@ -30,8 +30,7 @@ const appStyles = () => {
 
         'h3': {
           display: 'inline-block',
-          width: 220,
-          flaot: 'left'
+          width: 220
         },
 
         'input': {
@@ -91,4 +90,4 @@ const appStyles = () => {
   };
 };
 
-export default appStyles;
+export default homeStyles;
