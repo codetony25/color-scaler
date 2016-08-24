@@ -68,6 +68,8 @@ class homeState {
     this.generateErrorMessage = '';
     let hexStringArray;
 
+    console.log('this.storeGrayscaleColors[hexString]', Object.keys(this.storeGrayscaleColors).length);
+
     if (this.endCurrentColor) {
       hexStringArray = this.endCurrentColor.split('');
     }
@@ -86,7 +88,10 @@ class homeState {
         hexStringArray.length === 4
       ) {
         this.endCurrentColor =
-          `${this.endCurrentColor}${hexStringArray[1]}${hexStringArray[1]}${hexStringArray[1]}`;
+          `${this.endCurrentColor}\
+            ${hexStringArray[1]}\
+            ${hexStringArray[1]}\
+            ${hexStringArray[1]}`;
       }
 
 
