@@ -1,25 +1,24 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import AppState from './AppState';
-import App from './App';
-
-const appState = new AppState();
+import Root from './routes.jsx';
 
 render(
   <AppContainer>
-    <App appState={appState} />
+    <Root />
   </AppContainer>,
   document.getElementById('root')
 );
 
+console.log('module.hot', module.hot);
+
 if (module.hot) {
-  module.hot.accept('./App', () => {
-    const NextApp = require('./App').default;
+  module.hot.accept('./routes', () => {
+    const NextRoot = require('./routes').default;
 
     render(
       <AppContainer>
-        <NextApp appState={appState} />
+        <NextRoot />
       </AppContainer>,
       document.getElementById('root')
     );

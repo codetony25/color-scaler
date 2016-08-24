@@ -2,7 +2,23 @@
   "presets": [
     "react",
     "es2015",
-    "stage-1"
+    "stage-0"
   ],
-  "plugins": ["transform-decorators-legacy", "react-hot-loader/babel"]
+  "plugins": [
+    "react-hot-loader/babel",
+    "transform-decorators-legacy"
+  ],
+  "env": {
+    "test": [
+      ["resolver", { "resolveDirs": [ "./" ] } ]
+    ],
+    "production": {
+      "plugins": [
+        "transform-react-remove-prop-types",
+        "transform-react-constant-elements",
+        "transform-react-inline-elements",
+        "transform-react-pure-class-to-function"
+      ]
+    }
+  }
 }
