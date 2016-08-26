@@ -7,6 +7,7 @@ import HomeState from './Home-state.js';
 
 @observer
 class Home extends React.Component {
+
   static displayName = 'Home';
 
   constructor (props) {
@@ -55,7 +56,7 @@ class Home extends React.Component {
               />
             </div>
             <div className="home-color-input-container">
-              <h4>RGB(A)</h4>
+              <h4>RGB(a)</h4>
               <input
                 type="text"
                 value={HomeState.rgbColorValue}
@@ -65,7 +66,7 @@ class Home extends React.Component {
               />
             </div>
             <div className="home-color-input-container">
-              <h4>HSL(A)</h4>
+              <h4>HSL(a)</h4>
               <input
                 type="text"
                 value={HomeState.hslColorValue}
@@ -75,12 +76,12 @@ class Home extends React.Component {
               />
             </div>
             <div className="home-color-input-container">
-              <h4>HSV</h4>
+              <h4>HSB</h4>
               <input
                 type="text"
-                value={HomeState.hsvColorValue}
-                placeholder="example: hsv(0, 100%, 100%)"
-                onChange={HomeState.onHsvColorInputChange}
+                value={HomeState.hsbColorValue}
+                placeholder="example: hsb(0, 100%, 100%)"
+                onChange={HomeState.onHsbColorInputChange}
               />
             </div>
             {this.renderColorName()}
@@ -96,12 +97,11 @@ class Home extends React.Component {
                 onChange={HomeState.onScaleColorInputChange}
               />
               <h2>Sass/Scss:</h2>
-              <p>{HomeState.resultLightenScaleColorValue}</p>
-              <p>{HomeState.resultDarkenScaleColorValue}</p>
-              <h2>HSL(A)</h2>
+              <p>{HomeState.resultedScaledColorValue}</p>
+              <h2>HSL(a)</h2>
               <p>{HomeState.resultHslScaleColorValue}</p>
-              <h2>HSV</h2>
-              <p>{HomeState.resultHsvScaleColorValue}</p>
+              <h2>HSB</h2>
+              <p>{HomeState.resultHsbScaleColorValue}</p>
             </div>
           </div>
         </div>

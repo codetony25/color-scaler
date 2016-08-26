@@ -10,8 +10,6 @@ render(
   document.getElementById('root')
 );
 
-console.log('module.hot', module.hot);
-
 if (module.hot) {
   module.hot.accept('./routes', () => {
     const NextRoot = require('./routes').default;

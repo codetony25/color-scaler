@@ -12,7 +12,6 @@ const homeStyles = (options) => {
     },
 
     '.home-container': {
-      background: options.color,
       height: '100%',
       width: '100%',
       display: 'flex',
@@ -26,11 +25,12 @@ const homeStyles = (options) => {
           margin: 10,
           padding: 18,
           fontSize: 20,
-          width: '90%'
+          width: '90%',
+          boxShadow: `0px -1px 0px 25px ${options.color}`
         },
 
         '.scale-color-input': {
-          boxShadow: `0px -1px 0px 30px ${options.scaleColor}`,
+          boxShadow: `0px -1px 0px 25px ${options.scaleColor}`,
           margin: 30
         },
 

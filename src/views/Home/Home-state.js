@@ -9,23 +9,28 @@ import tinycolor from 'tinycolor2';
 import homeStyle from './Home-style.js';
 
 class HomeState {
+
+  // Color Values
+  @observable hexColorValue = '#ffffff';
+  @observable rgbColorValue = 'rgb(255, 255, 255)';
+  @observable hslColorValue = 'hsl(360, 100%, 100%)';
+  @observable hsbColorValue = 'hsb(0, 100%, 100%)';
+  @observable nameColorValue = 'white';
+  @observable scaleColorValue = '#dddddd';
+
+  // Resulted Scaled Color Values
+  @observable resultedScaledColorValue = 'lighten() or darken()';
+  @observable resultHslScaleColorValue = 'hsl()';
+  @observable resultHsbScaleColorValue = 'hsb()';
+
+  // Default Styles
   @observable styles = homeStyle({
     color: 'hsl(360, 100%, 100%)',
     scaleColor: '#dddddd'
   });
-  @observable hexColorValue = '#ffffff';
-  @observable rgbColorValue = 'rgb(255, 255, 255)';
-  @observable hslColorValue = 'hsl(360, 100%, 100%)';
-  @observable hsvColorValue = 'hsv(0, 100%, 100%)';
-  @observable nameColorValue = 'white';
-  @observable scaleColorValue = '#dddddd';
-
-  @observable resultLightenScaleColorValue = 'lighten()';
-  @observable resultDarkenScaleColorValue = 'darken()';
-  @observable resultHslScaleColorValue = 'hsl()';
-  @observable resultHsvScaleColorValue = 'hsv()';
 
   constructor () {
+    // When page is loaded, we want to initially set the scaled color
     this.changeScaleColor(this.scaleColorValue);
   }
 
@@ -68,9 +73,9 @@ class HomeState {
     }
   };
 
-  onHsvColorInputChange = (event) => {
+  onHsbColorInputChange = (event) => {
     const hsvColorUserInput = event.target.value;
-    this.hsvColorValue = hsvColorUserInput;
+    this.hsbColorValue = hsvColorUserInput;
     if (tinycolor(hsvColorUserInput).isValid()) {
       this.showConvertedColorValues(hsvColorUserInput);
     }
@@ -91,39 +96,66 @@ class HomeState {
   };
 
   changeScaleColor = (colorValue) => {
+    console.log("COLOR VALUE", colorValue);
     if (tinycolor(colorValue).isValid()) {
       const convertedScaleColor = tinycolor(colorValue);
 
       this.resultHslScaleColorValue = convertedScaleColor.toHslString();
-      this.resultHsvScaleColorValue = convertedScaleColor.toHsvString();
+      this.resultHsbScaleColorValue = convertedScaleColor.toHsvString();
 
       this.styles = homeStyle({
         color: this.hexColorValue,
         scaleColor: this.scaleColorValue
       });
 
-      for (let index = 0.1; index < 100.0; index += 0.1) {
-        const colorIndex = index.toFixed(1);
-        const currentLightHexColor =
-          tinycolor(this.hexColorValue).lighten(colorIndex).toHexString();
-        const currentDarkHexColor =
-          tinycolor(this.hexColorValue).darken(colorIndex).toHexString();
+      for (let index = 0.1; index <= 100.0; index += 0.1) {
+        let colorIndex = index.toFixed(1);
+        let colorValueToBeConverted;
 
-        if (currentLightHexColor === convertedScaleColor.toString()) {
-          this.resultLightenScaleColorValue =
-            `lighten(${this.hexColorValue}, ${colorIndex}%)`;
+        const isColorValueDark = tinycolor(this.hexColorValue).isDark();
+
+        if (isColorValueDark) {
+          colorValueToBeConverted =
+            tinycolor(this.hexColorValue).lighten(colorIndex).toHexString();
         }
 
-        if (currentDarkHexColor === convertedScaleColor.toString()) {
-          this.resultDarkenScaleColorValue =
-            `darken(${this.hexColorValue}, ${colorIndex}%)`;
+        if (!isColorValueDark) {
+          colorValueToBeConverted =
+            tinycolor(this.hexColorValue).darken(colorIndex).toHexString();
+        }
+
+
+        if (colorValueToBeConverted === convertedScaleColor.toString()) {
+          const isPercentOdd = Math.floor(colorIndex) % 2;
+          const numberAfterDecimal = Number(colorIndex.toString().split('.')[1]);
+          const isOddAndFourOrEight = isPercentOdd && (numberAfterDecimal !== 4 || numberAfterDecimal !== 8);
+          const isEvenAndTwoOrSix = !isPercentOdd && (numberAfterDecimal !== 2 || numberAfterDecimal !== 6);
+          let colorPercentage = colorIndex;
+
+          // Test with #f7f7f7
+          if (isOddAndFourOrEight) {
+            colorPercentage = Math.floor(colorIndex);
+          }
+          else if (isEvenAndTwoOrSix) {
+            colorPercentage = Math.floor(colorIndex);
+          }
+
+          this.resultedScaledColorValue =
+            `${isColorValueDark ? 'lighten' : 'darken'}(${this.hexColorValue}, ${colorPercentage}%)`;
+
+          return;
         }
       }
+
+      const scaleHexString = convertedScaleColor.toHexString();
+
+      this.resultedScaledColorValue =
+        `${scaleHexString} is not comparable to ${this.scaleColorValue}`;
     }
   };
 
   showConvertedColorValues = (colorValue) => {
-    this.changeScaleColor(colorValue);
+    this.changeScaleColor(this.scaleColorValue);
 
     const convertedColor = tinycolor(colorValue);
     const colorFormat = convertedColor.getFormat();
@@ -131,18 +163,18 @@ class HomeState {
     if (colorFormat === 'hex') {
       this.rgbColorValue = convertedColor.toRgbString();
       this.hslColorValue = convertedColor.toHslString();
-      this.hsvColorValue = convertedColor.toHsvString();
+      this.hsbColorValue = convertedColor.toHsvString();
       this.nameColorValue = convertedColor.toName();
     }
     else if (colorFormat === 'rgb') {
       this.hslColorValue = convertedColor.toHslString();
-      this.hsvColorValue = convertedColor.toHsvString();
+      this.hsbColorValue = convertedColor.toHsvString();
       this.hexColorValue = convertedColor.toHexString();
       this.nameColorValue = convertedColor.toName();
     }
     else if (colorFormat === 'hsl') {
       this.rgbColorValue = convertedColor.toRgbString();
-      this.hsvColorValue = convertedColor.toHsvString();
+      this.hsbColorValue = convertedColor.toHsvString();
       this.hexColorValue = convertedColor.toHexString();
       this.nameColorValue = convertedColor.toName();
     }
@@ -155,7 +187,7 @@ class HomeState {
     else if (colorFormat === 'name') {
       this.rgbColorValue = convertedColor.toRgbString();
       this.hslColorValue = convertedColor.toHslString();
-      this.hsvColorValue = convertedColor.toHsvString();
+      this.hsbColorValue = convertedColor.toHsvString();
       this.hexColorValue = convertedColor.toHexString();
     }
 
