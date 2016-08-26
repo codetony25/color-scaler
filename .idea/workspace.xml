@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf1b7b5d-cca7-4143-ba0f-0a7f60f7a077" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.eslintrc" afterPath="$PROJECT_DIR$/.eslintrc" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/Home/Home-state.js" afterPath="$PROJECT_DIR$/src/views/Home/Home-state.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/Home/Home-style.js" afterPath="$PROJECT_DIR$/src/views/Home/Home-style.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/Home/Home.jsx" afterPath="$PROJECT_DIR$/src/views/Home/Home.jsx" />
     </list>
     <ignored path="color-scaler.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,21 +25,21 @@
     <splitter split-orientation="horizontal" split-proportion="0.5581246">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="Home-state.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="Home-state.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/views/Home/Home-state.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="170">
-                  <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+                <state relative-caret-position="289">
+                  <caret line="122" column="4" selection-start-line="122" selection-start-column="4" selection-end-line="122" selection-end-column="4" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Home.jsx" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Home.jsx" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/views/Home/Home.jsx">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="550">
-                  <caret line="108" column="6" selection-start-line="108" selection-start-column="6" selection-end-line="108" selection-end-column="6" />
+                <state relative-caret-position="618">
+                  <caret line="112" column="20" selection-start-line="112" selection-start-column="20" selection-end-line="112" selection-end-column="20" />
                   <folding />
                 </state>
               </provider>
@@ -67,8 +62,8 @@
           <file leaf-file-name="Home-style.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/views/Home/Home-style.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="663">
-                  <caret line="51" column="26" selection-start-line="51" selection-start-column="26" selection-end-line="51" selection-end-column="26" />
+                <state relative-caret-position="578">
+                  <caret line="46" column="30" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="30" />
                   <folding />
                 </state>
               </provider>
@@ -120,9 +115,9 @@
         <option value="$PROJECT_DIR$/src/client.js" />
         <option value="$PROJECT_DIR$/src/server.js" />
         <option value="$PROJECT_DIR$/.eslintrc" />
-        <option value="$PROJECT_DIR$/src/views/Home/Home-state.js" />
         <option value="$PROJECT_DIR$/src/views/Home/Home.jsx" />
         <option value="$PROJECT_DIR$/src/views/Home/Home-style.js" />
+        <option value="$PROJECT_DIR$/src/views/Home/Home-state.js" />
       </list>
     </option>
   </component>
@@ -679,12 +674,12 @@
       <workItem from="1470549198688" duration="37285000" />
       <workItem from="1470686163350" duration="25000" />
       <workItem from="1471082124503" duration="1732000" />
-      <workItem from="1472011359621" duration="23530000" />
+      <workItem from="1472011359621" duration="25289000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="99950000" />
+    <option name="totallyTimeSpent" value="101709000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1272" y="-1057" width="1920" height="1057" extended-state="6" />
@@ -946,26 +941,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/Home/Home-state.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="95" column="0" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/views/Home/Home.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="108" column="6" selection-start-line="108" selection-start-column="6" selection-end-line="108" selection-end-column="6" />
+        <state relative-caret-position="618">
+          <caret line="112" column="20" selection-start-line="112" selection-start-column="20" selection-end-line="112" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/Home/Home-style.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="51" column="26" selection-start-line="51" selection-start-column="26" selection-end-line="51" selection-end-column="26" />
+        <state relative-caret-position="578">
+          <caret line="46" column="30" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/Home/Home-state.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="122" column="4" selection-start-line="122" selection-start-column="4" selection-end-line="122" selection-end-column="4" />
           <folding />
         </state>
       </provider>

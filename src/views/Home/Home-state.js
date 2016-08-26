@@ -110,15 +110,13 @@ class HomeState {
           tinycolor(this.hexColorValue).darken(colorIndex).toHexString();
 
         if (currentLightHexColor === convertedScaleColor.toString()) {
-          const percentage = colorIndex;
           this.resultLightenScaleColorValue =
-            `lighten(${this.hexColorValue}, ${percentage}%)`;
+            `lighten(${this.hexColorValue}, ${colorIndex}%)`;
         }
 
         if (currentDarkHexColor === convertedScaleColor.toString()) {
-          const percentage = colorIndex;
           this.resultDarkenScaleColorValue =
-            `darken(${this.hexColorValue}, ${percentage}%)`;
+            `darken(${this.hexColorValue}, ${colorIndex}%)`;
         }
       }
     }
