@@ -1,57 +1,57 @@
-const homeStyles = () => {
-  return {
-    '.home-container': {
+const homeStyles = (options) => {
 
-      '.home-title': {
+  return {
+    '.home-title': {
+      textAlign: 'center',
+      paddingTop: 30,
+      color: 'red',
+
+      'p': {
+        color: 'blue'
+      }
+    },
+
+    '.home-container': {
+      background: options.color,
+      height: '100%',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-around',
+
+      '.home-color-input-container': {
         textAlign: 'center',
-        paddingTop: 30,
-        color: 'red',
+
+        'input': {
+          textAlign: 'center',
+          margin: 10,
+          padding: 18,
+          fontSize: 20,
+          width: '90%'
+        },
+
+        '.scale-color-input': {
+          boxShadow: `0px -1px 0px 30px ${options.scaleColor}`,
+          margin: 30
+        },
+
+        'h2': {
+          color: 'green'
+        },
+
+        'h3': {
+          padding: '20px 0'
+        },
+
+        'h4': {
+          textAlign: 'left',
+          color: 'blueviolet',
+          paddingLeft: 20
+        },
 
         'p': {
-          color: 'blue'
-        }
-      },
-
-      '.home-choose-color': {
-        textAlign: 'center',
-
-        'button': {
-          width: 100,
-          height: 40
-        },
-
-        'button:first-child': {
-          marginRight: 50
-        }
-      },
-
-      '.home-color-starting-input': {
-        textAlign: 'center',
-
-        'h3': {
-          display: 'inline-block',
-          width: 220
-        },
-
-        'input': {
-          margin: 30,
-          padding: 20,
-          fontSize: 25
-        }
-      },
-
-      '.home-color-ending-input': {
-        textAlign: 'center',
-
-        'h3': {
-          display: 'inline-block',
-          width: 220
-        },
-
-        'input': {
-          margin: 30,
-          padding: 20,
-          fontSize: 25
+          color: 'deeppink',
+          fontWeight: 'bold',
+          fontSize: 20
         }
       },
 

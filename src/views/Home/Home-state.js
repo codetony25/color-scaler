@@ -4,159 +4,169 @@ import {
   computed
 } from 'mobx';
 
-class homeState {
-  @observable startCurrentColor = '#000000';
-  @observable endCurrentColor;
-  @observable generatedColorScalePercentage;
-  @observable generateErrorMessage;
-  @observable startRgbColor = '';
-  @observable endRgbColor = '';
+import tinycolor from 'tinycolor2';
+
+import homeStyle from './Home-style.js';
+
+class HomeState {
+  @observable styles = homeStyle({
+    color: 'hsl(360, 100%, 100%)',
+    scaleColor: '#dddddd'
+  });
+  @observable hexColorValue = '#ffffff';
+  @observable rgbColorValue = 'rgb(255, 255, 255)';
+  @observable hslColorValue = 'hsl(360, 100%, 100%)';
+  @observable hsvColorValue = 'hsv(0, 100%, 100%)';
+  @observable nameColorValue = 'white';
+  @observable scaleColorValue = '#dddddd';
+
+  @observable resultLightenScaleColorValue = 'lighten()';
+  @observable resultDarkenScaleColorValue = 'darken()';
+  @observable resultHslScaleColorValue = 'hsl()';
+  @observable resultHsvScaleColorValue = 'hsv()';
 
   constructor () {
-    this.storeGrayscaleColors = {};
-
-    autorun(() => {
-      this.generateGrayscaleColors();
-    });
+    this.changeScaleColor(this.scaleColorValue);
   }
 
-  selectColor = (color) => {
-    this.startCurrentColor = color;
-    this.generateGrayscaleColors();
-    return this.startCurrentColor;
-  };
+  /**
+   * When user enters in a hex color, it will do a test to see if it is a
+   * valid hex color string, if it is then we will convert it to its values
+   * for rgb and rgba.
+   *
+   */
+  onHexColorInputChange = (event) => {
+    const hexColorUserInput = event.target.value;
+    const maximumHexLength = 7;
+    const hexValueInputLength = event.target.value.length;
 
-  handleStartColorChange = (event) => {
-    this.startCurrentColor = event.target.value;
-    return;
-  };
+    // Does not let hex value pass 7 characters for the input field
+    if (hexValueInputLength <= maximumHexLength) {
+      this.hexColorValue = event.target.value;
+    }
 
-  handleEndColorChange = (event) => {
-    this.endCurrentColor = event.target.value;
-  };
-
-  handleErrorMessage = () => {
-    this.generateErrorMessage =
-      'This is not a valid color hex value. For example: #e0e0e0 or #fff';
-  };
-
-  generateGrayscaleColors = () => {
-    for (var i = 0; i <= 10000; i++) {
-      let percent = i / 10000,
-        fixedPercent = (percent * 100).toFixed(1),
-        numberAfterDecimal = Number((fixedPercent / 10).toString().split('')[2]),
-        numberBeforeDecimal = Number((fixedPercent / 10).toString().split('')[0]),
-        hexString = this.shadeColor(this.startCurrentColor, percent);
-
-      if (numberAfterDecimal === 2 ||
-        numberAfterDecimal === 4 ||
-        numberAfterDecimal === 6 ||
-        numberAfterDecimal === 8 ||
-        fixedPercent / 10 === 10
-      ) {
-        fixedPercent = Math.floor(Number(fixedPercent));
-      }
-
-      this.storeGrayscaleColors[hexString] = {
-        hexColor: hexString.toUpperCase(),
-        percent: fixedPercent
-      };
+    if (tinycolor(hexColorUserInput).isValid()) {
+      this.showConvertedColorValues(hexColorUserInput);
     }
   };
 
-  onGenerateColorClick = (shadeType) => {
-    this.generateErrorMessage = '';
-    let hexStringArray;
 
-    console.log('this.storeGrayscaleColors[hexString]', Object.keys(this.storeGrayscaleColors).length);
+  onRgbColorInputChange = (event) => {
+    const rgbColorUserInput = event.target.value;
+    this.rgbColorValue = rgbColorUserInput;
 
-    if (this.endCurrentColor) {
-      hexStringArray = this.endCurrentColor.split('');
+    if (tinycolor(rgbColorUserInput).isValid()) {
+      this.showConvertedColorValues(rgbColorUserInput);
     }
-    else {
-      this.handleErrorMessage();
-      return;
+  };
+
+  onHslColorInputChange = (event) => {
+    const hslColorUserInput = event.target.value;
+    this.hslColorValue = hslColorUserInput;
+    if (tinycolor(hslColorUserInput).isValid()) {
+      this.showConvertedColorValues(hslColorUserInput);
     }
+  };
 
-    if ((hexStringArray.length === 4 ||
-      hexStringArray.length === 7) &&
-      hexStringArray[0] === '#'
-    ) {
+  onHsvColorInputChange = (event) => {
+    const hsvColorUserInput = event.target.value;
+    this.hsvColorValue = hsvColorUserInput;
+    if (tinycolor(hsvColorUserInput).isValid()) {
+      this.showConvertedColorValues(hsvColorUserInput);
+    }
+  };
 
-      if (hexStringArray[1] === hexStringArray[2] &&
-        hexStringArray[1] === hexStringArray[3] &&
-        hexStringArray.length === 4
-      ) {
-        this.endCurrentColor =
-          `${this.endCurrentColor}\
-            ${hexStringArray[1]}\
-            ${hexStringArray[1]}\
-            ${hexStringArray[1]}`;
-      }
+  onNameColorInputChange = (event) => {
+    const nameColorUserInput = event.target.value;
+    this.nameColorValue = nameColorUserInput;
+    if (tinycolor(nameColorUserInput).isValid()) {
+      this.showConvertedColorValues(nameColorUserInput);
+    }
+  };
 
+  onScaleColorInputChange = (event) => {
+    const scaleColorUserInput = event.target.value;
+    this.scaleColorValue = scaleColorUserInput;
+    this.changeScaleColor(scaleColorUserInput);
+  };
 
-      this.endRgbColor = this.convertHexToRgb(this.endCurrentColor);
-      this.startRgbColor = this.convertHexToRgb(this.startCurrentColor);
-      this.endCurrentColor = this.endCurrentColor.toUpperCase();
+  changeScaleColor = (colorValue) => {
+    if (tinycolor(colorValue).isValid()) {
+      const convertedScaleColor = tinycolor(colorValue);
 
-      for (let key in this.storeGrayscaleColors) {
-        if (this.storeGrayscaleColors[key].hexColor === this.endCurrentColor) {
-          let colorPercent = this.storeGrayscaleColors[key].percent;
+      this.resultHslScaleColorValue = convertedScaleColor.toHslString();
+      this.resultHsvScaleColorValue = convertedScaleColor.toHsvString();
 
-          if (shadeType === 'darken') {
-            console.log('this.startCurrentColor', this.startCurrentColor);
-            colorPercent = Math.abs(colorPercent - 100.0).toString();
-            console.log('colorPercent', colorPercent);
-          }
+      this.styles = homeStyle({
+        color: this.hexColorValue,
+        scaleColor: this.scaleColorValue
+      });
 
-          this.generatedColorScalePercentage =
-            `${shadeType}(${this.startCurrentColor}, ${colorPercent}%);`;
-          return;
+      for (let index = 0.1; index < 100.0; index += 0.1) {
+        const colorIndex = index.toFixed(1);
+        const currentLightHexColor =
+          tinycolor(this.hexColorValue).lighten(colorIndex).toHexString();
+        const currentDarkHexColor =
+          tinycolor(this.hexColorValue).darken(colorIndex).toHexString();
+
+        if (currentLightHexColor === convertedScaleColor.toString()) {
+          const percentage = colorIndex;
+          this.resultLightenScaleColorValue =
+            `lighten(${this.hexColorValue}, ${percentage}%)`;
+        }
+
+        if (currentDarkHexColor === convertedScaleColor.toString()) {
+          const percentage = colorIndex;
+          this.resultDarkenScaleColorValue =
+            `darken(${this.hexColorValue}, ${percentage}%)`;
         }
       }
     }
-    else {
-      this.handleErrorMessage();
-    }
-
   };
 
-  convertHexToRgb = (hex, opacity) => {
-    if (hex.split('')[0] !== '#' && hex.split('').length !== 7) {
-      console.warn(
-        `function: convertHexToRgb has to have at least 7 characters
-         or and has to be a hex string like this: #e0e0e0`
-      );
+  showConvertedColorValues = (colorValue) => {
+    this.changeScaleColor(colorValue);
+
+    const convertedColor = tinycolor(colorValue);
+    const colorFormat = convertedColor.getFormat();
+
+    if (colorFormat === 'hex') {
+      this.rgbColorValue = convertedColor.toRgbString();
+      this.hslColorValue = convertedColor.toHslString();
+      this.hsvColorValue = convertedColor.toHsvString();
+      this.nameColorValue = convertedColor.toName();
+    }
+    else if (colorFormat === 'rgb') {
+      this.hslColorValue = convertedColor.toHslString();
+      this.hsvColorValue = convertedColor.toHsvString();
+      this.hexColorValue = convertedColor.toHexString();
+      this.nameColorValue = convertedColor.toName();
+    }
+    else if (colorFormat === 'hsl') {
+      this.rgbColorValue = convertedColor.toRgbString();
+      this.hsvColorValue = convertedColor.toHsvString();
+      this.hexColorValue = convertedColor.toHexString();
+      this.nameColorValue = convertedColor.toName();
+    }
+    else if (colorFormat === 'hsv') {
+      this.rgbColorValue = convertedColor.toRgbString();
+      this.hslColorValue = convertedColor.toHslString();
+      this.hexColorValue = convertedColor.toHexString();
+      this.nameColorValue = convertedColor.toName();
+    }
+    else if (colorFormat === 'name') {
+      this.rgbColorValue = convertedColor.toRgbString();
+      this.hslColorValue = convertedColor.toHslString();
+      this.hsvColorValue = convertedColor.toHsvString();
+      this.hexColorValue = convertedColor.toHexString();
     }
 
-    hex = hex.replace('#', '');
-
-    let result,
-      red = parseInt(hex.substring(0, 2), 16),
-      green = parseInt(hex.substring(2, 4), 16),
-      blue = parseInt(hex.substring(4, 6), 16);
-
-    if (!opacity) {
-      result = `rgb(${red}, ${green}, ${blue})`;
-    } else {
-      result = `rgba(${red}, ${green}, ${blue}, ${opacity / 100})`;
-    }
-
-    return result;
-  };
-
-
-  shadeColor = (color, percent) => {
-    var f=parseInt(color.slice(1),16),
-      t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
-    return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
-  };
-
-  blendColors = (c0, c1, p) => {
-    var f=parseInt(c0.slice(1),16),t=parseInt(c1.slice(1),16),R1=f>>16,G1=f>>8&0x00FF,B1=f&0x0000FF,R2=t>>16,G2=t>>8&0x00FF,B2=t&0x0000FF;
-    return "#"+(0x1000000+(Math.round((R2-R1)*p)+R1)*0x10000+(Math.round((G2-G1)*p)+G1)*0x100+(Math.round((B2-B1)*p)+B1)).toString(16).slice(1);
+    this.styles = homeStyle({
+      color: convertedColor.toHexString(),
+      scaleColor: this.scaleColorValue
+    });
   };
 
 }
 
-export default new homeState();
+export default new HomeState();
