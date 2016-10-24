@@ -1,8 +1,4 @@
-import {
-  observable,
-  autorun,
-  computed
-} from 'mobx';
+import { observable } from 'mobx';
 
 import tinycolor from 'tinycolor2';
 
